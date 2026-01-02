@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec tsx src/main.ts",
-    "test": "jest"
+    "test": "jest",
+    "build": "rimraf dist && tsc",
+    "start": "node dist/main.js"
   },
   "jest": {
     "transform": {
@@ -45,6 +47,7 @@
     "jest": "^30.2.0",
     "nodemon": "^3.1.11",
     "prisma": "^7.2.0",
+    "rimraf": "^6.1.2",
     "supertest": "^7.1.4",
     "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
