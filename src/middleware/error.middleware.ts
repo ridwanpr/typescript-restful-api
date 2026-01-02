@@ -10,16 +10,37 @@ export const errorMiddleware = async (
 ) => {
   if (error instanceof ZodError) {
     res.status(400).json({
-      errors: `Validation Error: ${JSON.stringify(error)}`,
+      errors: {
+        type: 'Validation Error',
+        details: error.issues.map((issue) => {
+          if (issue.path.length === 0 && issue.code === 'invalid_type') {
+            return {
+              field: 'body',
+              message: 'Request body is required',
+            };
+          }
+
+          return {
+            field: issue.path.join('.') || 'unknown',
+            message: issue.message,
+          };
+        }),
+      },
     });
   } else if (error instanceof ResponseError) {
     res.status(error.status).json({
-      errors: error.message,
+      errors: {
+        type: 'Application Error',
+        message: error.message,
+      },
     });
   } else {
     res.status(500).json({
-      errors: error.message,
-      stack: error.stack ?? null,
+      errors: {
+        type: 'Internal Server Error',
+        message: error.message,
+        ...(process.env.NODE_ENV === 'development' && { stack: error.stack }),
+      },
     });
   }
 };

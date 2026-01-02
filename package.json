@@ -4,11 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "nodemon --exec tsx src/main.ts",
     "test": "jest"
   },
   "jest": {
     "transform": {
-      "^.+\\.[t|j]sx?$": "babel-jest"
+      "^.+\\.(t|j)sx?$": "babel-jest",
+      "^.+\\.mjs$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!@prisma)"
+    ],
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1"
     }
   },
   "keywords": [],
@@ -33,9 +41,13 @@
     "@types/node": "^25.0.3",
     "@types/supertest": "^6.0.3",
     "babel-jest": "^30.2.0",
+    "babel-plugin-transform-import-meta": "^2.3.3",
     "jest": "^30.2.0",
+    "nodemon": "^3.1.11",
     "prisma": "^7.2.0",
     "supertest": "^7.1.4",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
 }
