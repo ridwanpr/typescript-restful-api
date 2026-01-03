@@ -1,5 +1,9 @@
 import { z, type ZodType } from 'zod';
-import type { CreateUserRequest, LoginUserRequest } from '../models/user.model.js';
+import type {
+  CreateUserRequest,
+  LoginUserRequest,
+  UpdateUserRequest,
+} from '../models/user.model.js';
 
 export class UserValidation {
   static readonly REGISTER: ZodType<CreateUserRequest> = z.object({
@@ -26,5 +30,18 @@ export class UserValidation {
       .string({ message: 'Password is required' })
       .min(1, { message: 'Password cannot be empty' })
       .max(100, { message: 'Password must be less than 100 characters' }),
+  });
+
+  static readonly UPDATE: ZodType<UpdateUserRequest> = z.object({
+    name: z
+      .string({ message: 'Name must be a string' })
+      .min(1, { message: 'Name cannot be empty' })
+      .max(100, { message: 'Name must be less than 100 characters' })
+      .optional(),
+    password: z
+      .string({ message: 'Password must be a string' })
+      .min(1, { message: 'Password cannot be empty' })
+      .max(100, { message: 'Password must be less than 100 characters' })
+      .optional(),
   });
 }

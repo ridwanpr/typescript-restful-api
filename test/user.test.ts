@@ -3,6 +3,7 @@ import { app } from '../src/application/app';
 import { logger } from '../src/application/logging';
 import { UserTest } from './test-util';
 import { prisma } from '../src/application/database';
+import bcrypt from 'bcrypt';
 
 describe('POST /api/users', () => {
   afterEach(async () => {
@@ -98,9 +99,7 @@ describe('GET /api/users/current', () => {
   });
 
   it('should be able to get current user', async () => {
-    const response = await supertest(app)
-      .get('/api/users/current')
-      .set('X-API-TOKEN', 'test');
+    const response = await supertest(app).get('/api/users/current').set('X-API-TOKEN', 'test');
 
     logger.debug(response.body);
 
@@ -118,5 +117,76 @@ describe('GET /api/users/current', () => {
 
     expect(response.status).toBe(401);
     expect(response.body.errors).toBeDefined();
+  });
+});
+
+describe('PATCH /api/users/current', () => {
+  beforeEach(async () => {
+    await UserTest.create();
+  });
+
+  afterEach(async () => {
+    await UserTest.delete();
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
+  it('should reject update user if request is invalid', async () => {
+    const response = await supertest(app)
+      .patch('/api/users/current')
+      .set('X-API-TOKEN', 'test')
+      .send({
+        name: '',
+        password: '',
+      });
+
+    logger.debug(response.body);
+    expect(response.status).toBe(400);
+    expect(response.body.errors).toBeDefined();
+  });
+
+  it('should reject update user if auth token is invalid', async () => {
+    const response = await supertest(app)
+      .patch('/api/users/current')
+      .set('X-API-TOKEN', 'wrong token')
+      .send({
+        name: 'correct name',
+        password: 'correct password',
+      });
+
+    logger.debug(response.body);
+    expect(response.status).toBe(401);
+    expect(response.body.errors).toBeDefined();
+  });
+
+  it('should be able to update user name', async () => {
+    const response = await supertest(app)
+      .patch('/api/users/current')
+      .set('X-API-TOKEN', 'test')
+      .send({
+        name: 'update name',
+      });
+
+    logger.debug(response.body);
+    expect(response.status).toBe(200);
+    expect(response.body.data.name).toBe('update name');
+  });
+
+  it('should be able to update user password', async () => {
+    const response = await supertest(app)
+      .patch('/api/users/current')
+      .set('X-API-TOKEN', 'test')
+      .send({
+        password: 'correct',
+      });
+
+    logger.debug(response.body);
+
+    const user = await UserTest.get();
+    expect(await bcrypt.compare('correct', user.password)).toBe(true);
+
+    expect(response.status).toBe(200);
   });
 });

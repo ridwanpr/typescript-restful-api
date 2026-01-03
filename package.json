@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec tsx src/main.ts",
+    "dev": "tsx watch src/main.ts",
     "test": "jest",
     "build": "rimraf dist && tsc",
     "start": "node dist/main.js"
@@ -47,7 +47,6 @@
     "babel-jest": "^30.2.0",
     "babel-plugin-transform-import-meta": "^2.3.3",
     "jest": "^30.2.0",
-    "nodemon": "^3.1.11",
     "prisma": "^7.2.0",
     "rimraf": "^6.1.2",
     "supertest": "^7.1.4",
