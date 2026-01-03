@@ -7,7 +7,7 @@ export class ContactController {
   static async create(req: UserRequest, res: Response, next: NextFunction) {
     try {
       const request: CreateContactRequest = req.body as CreateContactRequest;
-      const response = ContactService.create(req.user!, request);
+      const response = await ContactService.create(req.user!, request);
 
       res.status(200).json({
         data: response,
