@@ -19,7 +19,7 @@ describe('POST /api/users', () => {
       .post('/api/users')
       .send({ username: '', password: '', name: '' });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
     expect(response.status).toBe(400);
     expect(response.body.errors).toBeDefined();
   });
@@ -29,7 +29,7 @@ describe('POST /api/users', () => {
       .post('/api/users')
       .send({ username: 'test', password: 'test', name: 'test' });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
     expect(response.status).toBe(200);
     expect(response.body.data.username).toBe('test');
     expect(response.body.data.name).toBe('test');
@@ -55,7 +55,7 @@ describe('POST /api/users/login', () => {
       password: 'test',
     });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
     expect(response.status).toBe(200);
     expect(response.body.data.username).toBe('test');
     expect(response.body.data.name).toBe('test');
@@ -68,7 +68,7 @@ describe('POST /api/users/login', () => {
       password: 'test',
     });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
     expect(response.status).toBe(401);
     expect(response.body.errors).toBeDefined();
   });
@@ -79,7 +79,7 @@ describe('POST /api/users/login', () => {
       password: 'wrongpassword',
     });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
     expect(response.status).toBe(401);
     expect(response.body.errors).toBeDefined();
   });
@@ -101,7 +101,7 @@ describe('GET /api/users/current', () => {
   it('should be able to get current user', async () => {
     const response = await supertest(app).get('/api/users/current').set('X-API-TOKEN', 'test');
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
 
     expect(response.status).toBe(200);
     expect(response.body.data.username).toBe('test');
@@ -113,7 +113,7 @@ describe('GET /api/users/current', () => {
       .get('/api/users/current')
       .set('X-API-TOKEN', 'invalid token');
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
 
     expect(response.status).toBe(401);
     expect(response.body.errors).toBeDefined();
@@ -142,7 +142,7 @@ describe('PATCH /api/users/current', () => {
         password: '',
       });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
     expect(response.status).toBe(400);
     expect(response.body.errors).toBeDefined();
   });
@@ -156,7 +156,7 @@ describe('PATCH /api/users/current', () => {
         password: 'correct password',
       });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
     expect(response.status).toBe(401);
     expect(response.body.errors).toBeDefined();
   });
@@ -169,7 +169,7 @@ describe('PATCH /api/users/current', () => {
         name: 'update name',
       });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
     expect(response.status).toBe(200);
     expect(response.body.data.name).toBe('update name');
   });
@@ -182,7 +182,7 @@ describe('PATCH /api/users/current', () => {
         password: 'correct',
       });
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
 
     const user = await UserTest.get();
     expect(await bcrypt.compare('correct', user.password)).toBe(true);
@@ -207,7 +207,7 @@ describe('DELETE /api/users/current', () => {
   it('should be able to logout', async () => {
     const response = await supertest(app).delete('/api/users/current').set('X-API-TOKEN', 'test');
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
 
     expect(response.status).toBe(200);
     expect(response.body.data).toBe('OK');
@@ -221,7 +221,7 @@ describe('DELETE /api/users/current', () => {
       .delete('/api/users/current')
       .set('X-API-TOKEN', 'invalid token');
 
-    logger.debug(response.body);
+    // logger.debug(response.body);
 
     expect(response.status).toBe(401);
     expect(response.body.errors).toBeDefined();

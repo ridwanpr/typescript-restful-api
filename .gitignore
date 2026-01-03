@@ -4,3 +4,4 @@ dist
 
 /generated/prisma
 .env
+launch.json
