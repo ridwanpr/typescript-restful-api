@@ -12,6 +12,7 @@ import { UserValidation } from '../validations/user.validation';
 import { Validation } from '../validations/validation';
 import bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
+import crypto from 'crypto';
 
 export class UserService {
   static async register(request: CreateUserRequest): Promise<UserResponse> {
@@ -59,7 +60,7 @@ export class UserService {
         username: loginRequest.username,
       },
       data: {
-        token: uuid(),
+        token: crypto.randomBytes(32).toString('hex'),
       },
     });
 
