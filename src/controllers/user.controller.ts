@@ -59,4 +59,17 @@ export class UserController {
       next(err);
     }
   }
+
+  static async logout(req: UserRequest, res: Response, next: NextFunction) {
+    try {
+      const response = await UserService.logout(req.user!);
+
+      res.status(200).json({
+        success: true,
+        data: response,
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
 }
