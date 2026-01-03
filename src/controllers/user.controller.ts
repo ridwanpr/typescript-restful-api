@@ -66,7 +66,7 @@ export class UserController {
 
       res.status(200).json({
         success: true,
-        data: response,
+        data: 'OK',
       });
     } catch (err) {
       next(err);

@@ -190,3 +190,40 @@ describe('PATCH /api/users/current', () => {
     expect(response.status).toBe(200);
   });
 });
+
+describe('DELETE /api/users/current', () => {
+  beforeEach(async () => {
+    await UserTest.create();
+  });
+
+  afterEach(async () => {
+    await UserTest.delete();
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
+  it('should be able to logout', async () => {
+    const response = await supertest(app).delete('/api/users/current').set('X-API-TOKEN', 'test');
+
+    logger.debug(response.body);
+
+    expect(response.status).toBe(200);
+    expect(response.body.data).toBe('OK');
+
+    const user = await UserTest.get();
+    expect(user.token).toBe(null);
+  });
+
+  it('should reject user logout if token is invalid', async () => {
+    const response = await supertest(app)
+      .delete('/api/users/current')
+      .set('X-API-TOKEN', 'invalid token');
+
+    logger.debug(response.body);
+
+    expect(response.status).toBe(401);
+    expect(response.body.errors).toBeDefined();
+  });
+});
