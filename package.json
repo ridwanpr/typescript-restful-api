@@ -15,7 +15,7 @@
       "^.+\\.mjs$": "babel-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!@prisma)"
+      "node_modules/(?!(@prisma|uuid))"
     ],
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1"
@@ -30,6 +30,7 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
+    "uuid": "^13.0.0",
     "winston": "^3.19.0",
     "zod": "^4.3.3"
   },
@@ -42,6 +43,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^25.0.3",
     "@types/supertest": "^6.0.3",
+    "@types/uuid": "^10.0.0",
     "babel-jest": "^30.2.0",
     "babel-plugin-transform-import-meta": "^2.3.3",
     "jest": "^30.2.0",

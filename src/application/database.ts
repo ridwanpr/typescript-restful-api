@@ -45,8 +45,8 @@ prisma.$on('info', (e) => {
   logger.info(e);
 });
 
-prisma.$on('query', (e) => {
-  logger.info(e);
-});
+// prisma.$on('query', (e) => {
+//   logger.info(e);
+// });
 
 export { prisma };

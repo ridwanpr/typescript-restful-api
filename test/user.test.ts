@@ -34,3 +34,30 @@ describe('POST /api/users', () => {
     expect(response.body.data.name).toBe('test');
   });
 });
+
+describe('POST /api/users/login', () => {
+  beforeEach(async () => {
+    await UserTest.create();
+  });
+
+  afterEach(async () => {
+    await UserTest.delete();
+  });
+
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
+  it('should be able to login', async () => {
+    const response = await supertest(app).post('/api/users/login').send({
+      username: 'test',
+      password: 'test',
+    });
+
+    logger.debug(response.body);
+    expect(response.status).toBe(200);
+    expect(response.body.data.username).toBe('test');
+    expect(response.body.data.name).toBe('test');
+    expect(response.body.data.token).toBeDefined();
+  });
+});
